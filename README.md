@@ -17,12 +17,11 @@ local index = 1
 local patternIndex = 1
 local waitTime = 0
 local iyLoaded = false
-local mikeyLoaded = false
+local oxrLoaded = false -- Updated from Mikey
 local gazeLoaded = false
 local redzLoaded = false
 
-
----------------- PHRASES (DmNx Empire Style) ----------------
+---------------- PHRASES ----------------
 local phrases = {
     "DmNx Hub On Top!", "DmNx Empire is here", "Don't mess with DmNx",
     "Join DmNx Empire", "DmNx V2 Loading...", "Subscribe to DmNx",
@@ -41,17 +40,15 @@ local gui = Instance.new("ScreenGui", game.CoreGui)
 gui.Name = "DmNx_V2"
 gui.ResetOnSpawn = false
 
--- FLOAT TOGGLE
-local toggleBtn = Instance.new("TextButton", gui)
-toggleBtn.Size = UDim2.fromScale(0.12, 0.05)
-toggleBtn.Position = UDim2.fromScale(0.44, 0.02)
-toggleBtn.Text = "DmNx UI"
-toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 200) -- DmNx Purple
-toggleBtn.TextColor3 = Color3.new(1,1,1)
-toggleBtn.Font = Enum.Font.GothamBold
-toggleBtn.TextScaled = true
+-- CIRCLE LOGO TOGGLE (Updated to Circle + Logo)
+local toggleBtn = Instance.new("ImageButton", gui)
+toggleBtn.Size = UDim2.fromOffset(60, 60)
+toggleBtn.Position = UDim2.new(0.44, 0, 0.02, 0)
+toggleBtn.Image = "rbxassetid://1850623297" -- Your Lion Logo ID
+toggleBtn.BackgroundColor3 = Color3.fromRGB(212, 175, 55) -- Empire Gold
 toggleBtn.BorderSizePixel = 0
-Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0,12)
+local toggleCorner = Instance.new("UICorner", toggleBtn)
+toggleCorner.CornerRadius = UDim.new(1, 0) -- Makes it a perfect circle
 
 -- MAIN FRAME
 local frame = Instance.new("Frame", gui)
@@ -61,6 +58,7 @@ frame.BackgroundColor3 = Color3.fromRGB(15, 0, 30)
 frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
+frame.Visible = true
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0,16)
 
 -- HEADER
@@ -104,7 +102,6 @@ end
 
 ---------------- SPAM UI ----------------
 local input = makeBox("Spam Text", 0.05, 0.15)
-
 local startBtn = makeBtn("START", 0.05, 0.26)
 local stopBtn  = makeBtn("STOP",  0.53, 0.26)
 
@@ -146,23 +143,15 @@ status.Font = Enum.Font.GothamBold
 status.TextScaled = true
 
 ---------------- TOOLS ----------------
-local iyBtn    = makeBtn("INFINITE YIELD", 0.05, 0.55)
-local mikeyBtn = makeBtn("MIKEY MUSIC", 0.53, 0.55)
-local gazeBtn  = makeBtn("GAZE EMOTES", 0.29, 0.65)
-local redzBtn  = makeBtn("Redz Hub", 0.29, 0.75)
-                 
+local iyBtn     = makeBtn("INFINITE YIELD", 0.05, 0.55)
+local oxrBtn    = makeBtn("OXR MUSIC V1", 0.53, 0.55) -- Updated Name
+local gazeBtn   = makeBtn("GAZE EMOTES", 0.29, 0.65)
+local redzBtn   = makeBtn("Redz Hub", 0.29, 0.75)
+
 ---------------- CHAT SEND ----------------
 local function send(msg, pattern)
     if not msg or msg == "" then return end
-
     local final = msg
-    if pattern then
-        local p = {"@","#-","@#"}
-        local s = p[patternIndex]
-        final = string.rep(s, math.floor(170/#s)) .. " " .. msg
-        patternIndex = patternIndex % #p + 1
-    end
-
     pcall(function()
         if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
             TextChatService.TextChannels.RBXGeneral:SendAsync(final)
@@ -196,7 +185,7 @@ stopBtn.MouseButton1Click:Connect(function()
     status.TextColor3 = Color3.fromRGB(255,80,80)
 end)
 
----------------- LOADER SCRIPTS (STAY SAME) ----------------
+---------------- LOADER SCRIPTS ----------------
 iyBtn.MouseButton1Click:Connect(function()
     if iyLoaded then iyBtn.Text = "IY LOADED ✅" return end
     iyLoaded = true
@@ -207,13 +196,13 @@ iyBtn.MouseButton1Click:Connect(function()
     end)
 end)
 
-mikeyBtn.MouseButton1Click:Connect(function()
-    if mikeyLoaded then mikeyBtn.Text = "MIKEY LOADED ✅" return end
-    mikeyLoaded = true
-    mikeyBtn.Text = "LOADING..."
+oxrBtn.MouseButton1Click:Connect(function() -- Updated Logic for OXR
+    if oxrLoaded then oxrBtn.Text = "OXR LOADED ✅" return end
+    oxrLoaded = true
+    oxrBtn.Text = "LOADING..."
     task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Gaurav-0196/Mickey-Aud/refs/heads/main/MickeyMusic"))() end)
-        mikeyBtn.Text = "MIKEY LOADED ✅"
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-OXR-RECHAT-207620"))() end)
+        oxrBtn.Text = "OXR LOADED ✅"
     end)
 end)
 
